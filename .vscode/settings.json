@@ -8,5 +8,28 @@
         "*test.py"
     ],
     "python.testing.pytestEnabled": false,
-    "python.testing.unittestEnabled": true
+    "python.testing.unittestEnabled": true,
+    "workbench.editor.alwaysShowEditorActions": true,
+    "terminal.integrated.commandsToSkipShell": [
+        ""
+    ],
+    "workbench.editor.autoLockGroups": {
+        "workbench.editorinputs.searchEditorInput": true,
+        "imagePreview.previewEditor": true,
+        "gitlens.rebase": true,
+        "workbench.input.interactive": true,
+        "jsProfileVisualizer.heapprofile.table": true,
+        "repl": true,
+        "notebookOutputEditor": true,
+        "mainThreadWebview-markdown.preview": true
+    },
+    "workbench.editor.defaultBinaryEditor": "default",
+    "workbench.editor.enablePreviewFromCodeNavigation": true,
+    "workbench.editor.enablePreviewFromQuickOpen": true,
+    "workbench.editor.highlightModifiedTabs": true,
+    "workbench.editor.pinnedTabsOnSeparateRow": true,
+    "workbench.editor.preferHistoryBasedLanguageDetection": true,
+    "workbench.editor.limit.enabled": true,
+    "workbench.editor.limit.perEditorGroup": true,
+    "workbench.settings.editor": "json"
 }
