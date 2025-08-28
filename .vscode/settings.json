@@ -1,35 +1,4 @@
 {
-    "python.analysis.typeCheckingMode": "standard",
-    "python.testing.unittestArgs": [
-        "-v",
-        "-s",
-        ".",
-        "-p",
-        "*test.py"
-    ],
-    "python.testing.pytestEnabled": false,
-    "python.testing.unittestEnabled": true,
-    "workbench.editor.alwaysShowEditorActions": true,
-    "terminal.integrated.commandsToSkipShell": [
-        ""
-    ],
-    "workbench.editor.autoLockGroups": {
-        "workbench.editorinputs.searchEditorInput": true,
-        "imagePreview.previewEditor": true,
-        "gitlens.rebase": true,
-        "workbench.input.interactive": true,
-        "jsProfileVisualizer.heapprofile.table": true,
-        "repl": true,
-        "notebookOutputEditor": true,
-        "mainThreadWebview-markdown.preview": true
-    },
-    "workbench.editor.defaultBinaryEditor": "default",
-    "workbench.editor.enablePreviewFromCodeNavigation": true,
-    "workbench.editor.enablePreviewFromQuickOpen": true,
-    "workbench.editor.highlightModifiedTabs": true,
-    "workbench.editor.pinnedTabsOnSeparateRow": true,
-    "workbench.editor.preferHistoryBasedLanguageDetection": true,
-    "workbench.editor.limit.enabled": true,
-    "workbench.editor.limit.perEditorGroup": true,
-    "workbench.settings.editor": "json"
-}
+    "python.analysis.typeCheckingMode": "standard"
+}flutter doctor  # 检查环境是否有缺失（红叉表示需要修复，比如安装Android SDK、同意许可证）
+flutter pub get  # 后续项目中用于拉取依赖
