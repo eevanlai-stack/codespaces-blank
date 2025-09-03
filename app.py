@@ -6,6 +6,31 @@ app = Flask(__name__)
 CORS(app)
 
 
+# In-memory data store for employees (for demo purposes)
+employees = {
+    'E001': {
+        'id': 'E001',
+        'name': 'John Doe',
+        'email': 'john.doe@example.com',
+        'phone': '123-456-7890',
+        'title': 'Software Engineer',
+        'department': 'Engineering',
+        'salary': 5000,
+        'status': 'active',
+    },
+    'E002': {
+        'id': 'E002',
+        'name': 'Jane Smith',
+        'email': 'jane.smith@example.com',
+        'phone': '987-654-3210',
+        'title': 'Product Manager',
+        'department': 'Product',
+        'salary': 6500,
+        'status': 'active',
+    },
+}
+
+
 # 1. GPS定位
 @app.route('/gps', methods=['GET'])
 def get_location():
@@ -148,6 +173,67 @@ def get_profile():
         'phone': '123-456-7890'
     }
     return jsonify(profile_data)
+
+
+# 9.1 员工管理（Employee Management）
+@app.route('/employees', methods=['GET'])
+def list_employees():
+    # 返回所有员工列表
+    return jsonify(list(employees.values()))
+
+
+@app.route('/employees/<employee_id>', methods=['GET'])
+def get_employee(employee_id):
+    emp = employees.get(employee_id)
+    if not emp:
+        return jsonify({'error': f'Employee {employee_id} not found'}), 404
+    return jsonify(emp)
+
+
+@app.route('/employees', methods=['POST'])
+def create_employee():
+    data = request.get_json(silent=True) or {}
+    employee_id = data.get('id') or data.get('employee_id')
+    if not employee_id:
+        raise BadRequest('Missing field: id')
+    if employee_id in employees:
+        return jsonify({'error': f'Employee {employee_id} already exists'}), 409
+
+    # 基础字段
+    new_emp = {
+        'id': employee_id,
+        'name': data.get('name', ''),
+        'email': data.get('email', ''),
+        'phone': data.get('phone', ''),
+        'title': data.get('title', ''),
+        'department': data.get('department', ''),
+        'salary': data.get('salary', 0),
+        'status': data.get('status', 'active'),
+    }
+    employees[employee_id] = new_emp
+    return jsonify(new_emp), 201
+
+
+@app.route('/employees/<employee_id>', methods=['PUT'])
+def update_employee(employee_id):
+    emp = employees.get(employee_id)
+    if not emp:
+        return jsonify({'error': f'Employee {employee_id} not found'}), 404
+    data = request.get_json(silent=True) or {}
+    # 更新允许的字段
+    for key in ['name', 'email', 'phone', 'title', 'department', 'salary', 'status']:
+        if key in data:
+            emp[key] = data[key]
+    employees[employee_id] = emp
+    return jsonify(emp)
+
+
+@app.route('/employees/<employee_id>', methods=['DELETE'])
+def delete_employee(employee_id):
+    if employee_id not in employees:
+        return jsonify({'error': f'Employee {employee_id} not found'}), 404
+    deleted = employees.pop(employee_id)
+    return jsonify({'message': 'Deleted', 'employee': deleted})
 
 
 # 10. 聊天功能
