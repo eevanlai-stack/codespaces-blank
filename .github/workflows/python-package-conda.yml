@@ -1,13 +1,32 @@
 name: Python Package using Conda
 
-on: [push]
+on:
+  push：
+    branches：
+    -main
+    -release/*
+  on:
+  pull_request:
+    branches:
+    - main
+    on:
+  schedule:
+  - cron: "0 2 * * 1-5"
 
-jobs:
-  build-linux:
-    runs-on: ubuntu-latest
-    strategy:
+on:
+  workflow_dispatch:  
+  
+  jobs:
+  my_job:
+    name: deploy to staging
+    runs-on: ubuntu-22.04
       max-parallel: 5
 
+- name: Setup Node
+  uses: actions/setup-node@v4
+  with:
+    node-version: '20.x'
+    
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python 3.10
@@ -19,7 +38,7 @@ jobs:
         # $CONDA is an environment variable pointing to the root of the miniconda directory
         echo $CONDA/bin >> $GITHUB_PATH
     - name: Install dependencies
-      run: |
+      run: npm install
         conda env update --file environment.yml --name base
     - name: Lint with flake8
       run: |
@@ -30,5 +49,26 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        conda install pytest
+        conda install pjobs:
+  test:
+    name: Test on node ${{ matrix.node_version }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node_version: ['18.x', '20.x']
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node_version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node_version }}
+
+    - name: npm install, build and test
+      run: |
+        npm install
+        npm run build --if-present
+        npm testytest
         pytest
+        
